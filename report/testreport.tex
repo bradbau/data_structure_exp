@@ -1,0 +1,60 @@
+\documentclass[11pt]{article}
+    %文件类说明
+
+    %还可以选择的类是cctbook
+    
+    \setlength{\parindent}{12pt}%自然段第一行的缩进量为12pt
+    
+    \setlength{\parskip}{10pt plus1ptminus1pt}
+    
+    %自然段之间的距离为10pt，并可在8pt到11pt之间变化
+    
+    \setlength{\baselineskip}{8pt plus2ptminus1pt}
+    
+    %行间距为8pt，并可在7pt到10pt之间变化
+    
+    \setlength{\textheight}{21truecm}%版面高为21厘米
+    
+    \setlength{\textwidth}{14.5truecm}%版面宽为14.5厘米
+    \usepackage[left=3cm, right=3cm, top=2.5cm, bottom=2.5cm]{geometry}
+    \usepackage{leftidx}
+    %\usepackage{CJKutf8}
+    %\begin{CJK}{UTF8}{song}
+    
+    \begin{document}%正文开始
+    
+    \title{Thesis}%文章标题，双反斜杠\\表示换行
+    
+    \author{author\\Dept. of Math.}
+    
+    %作者名，单位，通信地址等，双反斜杠\\表示换行
+    
+    \date{2003/8/5}
+    
+    %文章写作日期，如果省略此行，计算机日期作为写作日期
+    
+    \maketitle%建立标题部分
+    
+    %文章的正文输入
+    
+    \begin{center}%参考文献的书写
+    
+    { 参考文献}
+    
+    \end{center}
+    
+    \vskip 0.1cm
+    
+    \def\hang{\hangindent\parindent}
+    
+    \def\textindent#1{\indent\llap{#1\enspace}\ignorespaces}
+    
+    \def\re{\par\hang\textindent}
+    
+    \re{[1]} Nordhaus E,Stewart B,WhiteA.On theMaximum Genus of a Graph.{\it J.combinatorial TheoryB},1971,11:258-267  
+    
+    \re{[2]} Skoviera M.The Maximum Genus of Graphsof Diameter Two.{\it Discrete Math}.1991, 87:175-180
+    
+    %\end{CJK}
+
+    \end{document}%源文件的结束
