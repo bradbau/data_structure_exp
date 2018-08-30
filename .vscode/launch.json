@@ -8,8 +8,9 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/source/test",
-            "args": [],
+        //    "program": "${workspaceFolder}/source/",
+        "program": "${file}.exe",
+            "args": ["D:\\__Learningmate\\DataStructure\\source\\hello.c"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -23,7 +24,8 @@
                     "ignoreFailures": true
                 }
                
-            ]
+            ],
+            "preLaunchTask": "gcc"
         }
     ]
 }
