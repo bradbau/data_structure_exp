@@ -2,18 +2,64 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "2.0.0",
-    "command": "gcc",
-    "args": ["-g","${file}","-o","${fileBasenameNoExtension}.exe"],    // 编译命令参数
-    "problemMatcher": {
-        "base": "$gcc",
-        "fileLocation": ["relative","${workspaceRoot} " ],
-        "pattern": {
-            "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
-            "file": 1,
-            "line": 2,
-            "column": 3,
-            "severity": 4,
-            "message": 5
+    "tasks": [
+        {
+            "label": "gcc",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileBasenameNoExtension}.exe",
+
+                
+            ],
+            "problemMatcher": {
+                "owner": "$gcc",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder} "
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "g++",
+            "command": "g++",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileBasenameNoExtension}",
+                "-fexec-charset=gbk"
+            ],
+            "problemMatcher": {
+                "owner": "$g++",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
-    }
+    ],
+   
 }
