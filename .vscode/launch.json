@@ -29,7 +29,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}\\${fileBasenameNoExtension}.exe",
-            "args": [],
+            "args": ["testdata.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
