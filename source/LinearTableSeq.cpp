@@ -169,12 +169,12 @@ int main(int argc, char *argv[])
 			if (ListEmpty(L) == TRUE)
 				printf("线性表是空表\n");
 			else
-				printf("操作失败\n");
+				printf("线性表非空\n");
 			getchar();
 			getchar();
 			break;
 		case 5:
-if (!(L.listsize))
+			if (!(L.listsize))
 			{
 				printf("There is no list\n");
 				getchar();getchar();
@@ -329,7 +329,7 @@ if (!(L.listsize))
 							if (!newbase)
 							{
 								printf("fail to reallocate memory\n");
-								return ERROR;
+								break;
 							}
 							else
 							{
@@ -464,7 +464,7 @@ status LocateElem(SqList L, ElemType e)
 {
 
 	int i = 1;
-	for (; i < L.length; i++)
+	for (; i <= L.length; i++)
 	{
 		if (L.elem[i - 1] == e)
 			return i;
@@ -646,10 +646,6 @@ status Txtread(char  *filename, ElemType **data)
 	//为了使输出的数组可以被正常读取完，这里加上一个NULL；
 	(*data)[i-1] = NULL;
 
-	///// 验证输出的部分，后期删除
-	for (i = 0; i < num; i++)
-		printf("%d\n", (*data)[i]);
-	///
 
 	fclose(pFile);
 	free(buffer);
