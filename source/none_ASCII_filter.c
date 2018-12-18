@@ -44,6 +44,11 @@ int main(int argc, char *argv[])
    
  
     /* 结束演示，关闭文件并释放内存 */
+
+    int i;
+    for (i =0; i<lSize; ++i){
+        char *ch = 
+    }
     fclose (pFile);
     free (buffer);
     return 0;

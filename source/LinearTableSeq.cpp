@@ -45,7 +45,7 @@ status ListDelete(SqList &L, int i, ElemType &e);
 status ListTraverse(SqList L); //简化过
 
 // 自定义函数
-status Txtread( char *filename, ElemType ** data);
+status Txtread(char *filename, ElemType **data);
 status SavingFile(SqList L);
 
 /*--------------------------------------------*/
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	// if exist inputfile, then use the content of the file as input
 	if (argc > 1)
 	{
-		if ( Txtread(argv[1], &dataMat))
+		if (Txtread(argv[1], &dataMat))
 		{
 			//输入datamat里的数据
 			filemode = TRUE;
@@ -85,9 +85,10 @@ int main(int argc, char *argv[])
 			{
 				while (dataMat[cir] != NULL)
 				{
-					if(cir<L.listsize){
-					L.elem[cir] = dataMat[cir];
-					cir++;
+					if (cir < L.listsize)
+					{
+						L.elem[cir] = dataMat[cir];
+						cir++;
 					}
 					else
 					{
@@ -115,7 +116,7 @@ int main(int argc, char *argv[])
 			//读取完元素后关闭filemode
 			filemode = FALSE;
 		}
-		
+
 		printf("\n\n");
 		printf("      Menu for Linear Table On Sequence Structure \n");
 		printf("-------------------------------------------------\n");
@@ -152,10 +153,11 @@ int main(int argc, char *argv[])
 			getchar();
 			break;
 		case 3:
-		if (!(L.listsize))
+			if (!(L.listsize))
 			{
 				printf("There is no list\n");
-				getchar();getchar();
+				getchar();
+				getchar();
 				break;
 			}
 			if (ClearList(L) == OK)
@@ -168,8 +170,7 @@ int main(int argc, char *argv[])
 		case 4:
 			if (ListEmpty(L) == TRUE)
 				printf("线性表是空表\n");
-			else
-				printf("线性表非空\n");
+
 			getchar();
 			getchar();
 			break;
@@ -177,11 +178,13 @@ int main(int argc, char *argv[])
 			if (!(L.listsize))
 			{
 				printf("There is no list\n");
-				getchar();getchar();
+				getchar();
+				getchar();
 				break;
 			}
-			else {
-			    length = ListLength(L);
+			else
+			{
+				length = ListLength(L);
 				printf("线性表长度为%d\n", length);
 			}
 			getchar();
@@ -191,7 +194,8 @@ int main(int argc, char *argv[])
 			if (!(L.listsize))
 			{
 				printf("There is no list\n");
-				getchar();getchar();
+				getchar();
+				getchar();
 				break;
 			}
 			printf("请输入要得到的元素序号：");
@@ -207,13 +211,14 @@ int main(int argc, char *argv[])
 			if (!(L.listsize))
 			{
 				printf("There is no list\n");
-				getchar();getchar();
+				getchar();
+				getchar();
 				break;
 			}
 			printf("请输入要定位的元素值：");
 			scanf("%d", &e);
-			if (seq = LocateElem(L, e) )
-				printf("查找得到第%d个元素的值符合要求\n",seq );
+			if (seq = LocateElem(L, e))
+				printf("查找得到第%d个元素的值符合要求\n", seq);
 			else
 				printf("操作失败\n");
 			getchar();
@@ -223,13 +228,14 @@ int main(int argc, char *argv[])
 			if (!(L.listsize))
 			{
 				printf("There is no list\n");
-				getchar();getchar();
+				getchar();
+				getchar();
 				break;
 			}
 			ElemType pre_e;
 			printf("请输入一个元素值，程序将返回它的前一个元素：");
 			scanf("%d", &e);
-			if (PriorElem(L, e, pre_e) )
+			if (PriorElem(L, e, pre_e))
 				printf("元素%d之前的元素为%d", e, pre_e);
 			else
 				printf("查找失败");
@@ -240,7 +246,8 @@ int main(int argc, char *argv[])
 			if (!(L.listsize))
 			{
 				printf("There is no list\n");
-				getchar();getchar();
+				getchar();
+				getchar();
 				break;
 			}
 			ElemType next_e;
@@ -255,7 +262,8 @@ int main(int argc, char *argv[])
 			if (!(L.listsize))
 			{
 				printf("There is no list\n");
-				getchar();getchar();
+				getchar();
+				getchar();
 				break;
 			}
 			printf("请输入待插入的元素以及插入的位置（用空格分割）：");
@@ -274,7 +282,8 @@ int main(int argc, char *argv[])
 			if (!(L.listsize))
 			{
 				printf("There is no list\n");
-				getchar();getchar();
+				getchar();
+				getchar();
 				break;
 			}
 			ListTraverse(L);
@@ -295,7 +304,8 @@ int main(int argc, char *argv[])
 			if (!(L.listsize))
 			{
 				printf("There is no list\n");
-				getchar();getchar();
+				getchar();
+				getchar();
 				break;
 			}
 			if (!ListTraverse(L))
@@ -308,7 +318,7 @@ int main(int argc, char *argv[])
 			printf("请输入要读入的文件名：");
 			scanf("%s", &file13);
 			//如果存在表，先销毁  //另一个版本，可以保存多个链表
-			if(L.listsize)
+			if (L.listsize)
 				DestroyList(L);
 			if (Txtread(file13, &dataMat))
 			{
@@ -350,10 +360,11 @@ int main(int argc, char *argv[])
 			getchar();
 			break;
 		case 14:
-			
-			if(SavingFile(L))
-				 printf("文件保存成功\n");
-			else printf("文件保存失败\n");
+
+			if (SavingFile(L))
+				printf("文件保存成功\n");
+			else
+				printf("文件保存失败\n");
 			getchar();
 			getchar();
 			break;
@@ -427,7 +438,8 @@ status ListEmpty(SqList L)
 		if (L.length == 0)
 			return TRUE;
 		else
-			return FALSE;
+			printf("线性表非空");
+		return FALSE;
 	}
 }
 
@@ -448,7 +460,7 @@ int ListLength(SqList L)
 status GetElem(SqList L, int i, ElemType &e)
 {
 
-	 if (!(i >= 1 && i <= L.length))
+	if (!(i >= 1 && i <= L.length))
 	{
 		printf("The list dose not have the %dth element\n", i);
 		return ERROR;
@@ -469,7 +481,7 @@ status LocateElem(SqList L, ElemType e)
 		if (L.elem[i - 1] == e)
 			return i;
 	}
-	 {	
+	{
 		printf("No such element in the list\n");
 		return ERROR;
 	}
@@ -502,7 +514,7 @@ status PriorElem(SqList L, ElemType cur, ElemType &pre_e)
 
 status NextElem(SqList L, ElemType cur, ElemType &next_e)
 {
-	
+
 	int i;
 	for (i = 1; i <= L.length; i++)
 	{
@@ -532,12 +544,13 @@ status ListInsert(SqList &L, int i, ElemType e)
 		return ERROR;
 	}
 	//空表插入首元素可以实现
-	if((!L.length)&& i==1){
+	if ((!L.length) && i == 1)
+	{
 		L.elem[0] = e;
 		L.length = 1;
 		return OK;
 	}
-	if (i >(L.length+1) || i < 1)
+	if (i > (L.length + 1) || i < 1)
 	{
 		printf("invalid input\n");
 		return ERROR;
@@ -566,7 +579,7 @@ status ListInsert(SqList &L, int i, ElemType e)
 		{
 			L.elem[j] = L.elem[j - 1];
 		}
-		L.elem[i -1 ] = e;
+		L.elem[i - 1] = e;
 		L.length++;
 		return OK;
 	}
@@ -581,8 +594,8 @@ status ListDelete(SqList &L, int i, ElemType &e)
 	}
 	e = L.elem[i - 1];
 	L.length--;
-	
-	for (; i <= L.length ; i++)
+
+	for (; i <= L.length; i++)
 	{
 		L.elem[i - 1] = L.elem[i];
 	}
@@ -605,14 +618,14 @@ status ListTraverse(SqList L)
 	return L.length;
 }
 
-status Txtread(char  *filename, ElemType **data)
+status Txtread(char *filename, ElemType **data)
 {
 	// only for integer number in an array
 	FILE *pFile;
 	long lSize;
 	char *buffer;
 	size_t result;
-	const char * Fn = filename;
+	const char *Fn = filename;
 
 	char c;
 
@@ -629,23 +642,20 @@ status Txtread(char  *filename, ElemType **data)
 	rewind(pFile);
 
 	*data = (ElemType *)malloc(lSize * sizeof(ElemType) + 1);
-	buffer = (char*)malloc(5*sizeof(char));
+	buffer = (char *)malloc(5 * sizeof(char));
 
-	
 	int i = 0;
-				    //   feof函数的辨析
-	while ( !feof(pFile) )  //这里有问题，feof函数的辨析比最后一个元素延后一个循环；暂时用i-1来解决
+	//   feof函数的辨析
+	while (!feof(pFile)) //这里有问题，feof函数的辨析比最后一个元素延后一个循环；暂时用i-1来解决
 	{
 		fgets(buffer, 5, pFile); //读取文件中的一行到buf中
 		(*data)[i] = atoi(buffer);
 		i++;
 	}
 
-
-	int num = i-1;
+	int num = i - 1;
 	//为了使输出的数组可以被正常读取完，这里加上一个NULL；
-	(*data)[i-1] = NULL;
-
+	(*data)[i - 1] = NULL;
 
 	fclose(pFile);
 	free(buffer);
@@ -660,7 +670,7 @@ status SavingFile(SqList L)
 	LF = '\n';
 	char filename[40];
 	char buf[10];
-	
+
 	printf("请输入要保存的文件名：");
 	scanf("%s", &filename);
 	//写文件的方法
@@ -671,9 +681,9 @@ status SavingFile(SqList L)
 	}
 	for (i = 0; i < L.length; i++)
 	{
-		
-		itoa(L.elem[i],buf, 10);
-		fputs(buf, fp );
+
+		itoa(L.elem[i], buf, 10);
+		fputs(buf, fp);
 		fputc(LF, fp);
 	}
 	//这里是1次性写入，对于其它物理结构，可通过遍历，逐个访问数据元素

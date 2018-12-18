@@ -1,0 +1,110 @@
+1.查找元素（找前驱后继由序号找内容），应该返回什么
+返回后目前只需要输出，所以我们只需要cJSON（elemtype）就好，那返回一个CNode有什么优势吗？
+没有
+
+况且printinfo也是用的cJSON
+所以把e都设成cJSON
+2.could not convert '(char*)(& divname)' from 'char*' to 'ElemType {aka cJSON}'
+    if (PriorElem(L, divname, &pre_e)){
+    这是声明定义和引用定义不同，导致无法识别
+3.完善多表操作
+    1)读入多表（在有表与无表状态下）
+    2）如果有多表，进入菜单前选择一个表操作菜单（如下三项）
+    3)保存多表
+    4）创建新表
+    5）删除表
+
+
+问题：
+
+case4   重复输出信息，if里的break不管用  s
+在初始化一个表后，销毁不彻底，导致后面的操作错误    s  原来是因为recollectnode只对head指向的节点进行了操作，而忽略了head本身的值
+
+fetal error listinsert中cJSONprint打印不出elem的值（说明geneJSON有问题），返回后list仍为空
+发现是传入的cJSON类型的e未初始化，它的类型域没有值，所以在传入后无法分类(不是元素类)
+所以现在必须把elemtype改成指针类型，这会影响到所有涉及元素内容的操作，
+listdelate insert要改
+
+CNode *ptr = Lg.curList->head;  ptr->next = malloc时出错
+
+
+getelem还输出的是数字
+locate 失败
+prior内查找失败
+after 内存越界
+
+1.state不明确
+
+周日晚
+clearlist有问题
+infowrite有问题
+nextelem
+
+周二上午
+
+先无链表添加一个链表，会导致读文件seg fault
+
+L是一个元素名称， 那就代表强连接，所以不能让他去表示别的东西
+
+
+我之所以在改一个功能后，别的功能会出错，是因为我没有设置基准状态
+基准状态，该状态下：
+    1.对表的操作状态
+    链表组：可以选择，可以添加
+    链表；指针L于curList值相同，gnumber代表Lgcontents内的元素数，包含curList，
+
+重要功能定义：
+    添加表：给当前curList另外分配内存，并把L内容存入curList内，清空L，gnumber+1，curList指向contents的下一个单元，返回基准状态（addlist中套用shiftcur）
+    读文件：添加表，然后把文件读入当前表， 读入的表名由gnumber决定
+    写文件：将所有
+
+
+
+当实现多表选择的时候，我遇到了一个问题：对当前所有表的索引方式不同，会造成操作困难，因为选择后，必须让程序回到基
+准操作状态。如果选择的不是curlist，就要令curlist分配内存存储L内容，再让L内容变为指向的表的内容，下一轮的选择时，这个L内容会与curList内容不同，而且按照程序逻辑，curList会分配新内存，那原来的内存怎么办，
+这个判断会带来不必要的额外复杂度
+
+所以我改变L为指针类型
+
+还有问题的函数：
+
+infowrite
+
+
+问题 ： array must be initialized with a brace-enclosed initialize
+    -》		char listname[10] = Genelname(Lg.gnumber);
+
+
+ShiftCur有一个问题是在第一句对想要作新操作的表分配内存后，
+后面让curList和L都等于该内存的赋值会因为更后面的initialist而白费，
+在initia里L会被重新分配地址，而读文件时用的是curList——一个只有内存而未初始化的指针
+
+
+我的生成表名的机制在状态中体线的不足，导致会有重复生成表名的冗余操作
+
+$$$$$$$$$$疑难杂症
+while(ptr->next!=NULL){//有百慕大的while，运行到中间会丢失进程
+
+			ptr = ptr->next;
+			cJSON_AddItemToArray(divlist, ptr->elem);	
+
+读入给定表，读三个数据后就会丢失进程，无限运行   （注意，程序等待输入时无法暂停，这和可以暂停找不着点不同
+用
+    			int divsize = cJSON_GetArraySize(divlist);
+			printf("size of divlist :%d", divsize);
+    发现添加第一个元素时array就已经大小为3了， 说明出现了不正常的添加
+
+
+原来向数组加入元素会直接把有next的elem一加到底
+
+$$$$$$$$$$$$$$$
+            
+
+
+
+反复选择表并对表内容操作
+
+
+已经实现了无初始条件读文件中的一个表
+
+删除表后基准状态不到位
