@@ -8,7 +8,7 @@
 #include<queue>
 #include<vector>
 using namespace std;
-#define testblock
+//#define testblock
 
 #include"cJSON.h"
 /*---------page 10 on textbook ---------*/
@@ -52,8 +52,9 @@ typedef struct
 
 status InitBiTree(BinaTree **T);
 status DestroyBiTree(BinaTree *T);
-status CreateBiTree( BinaTree *T, const char * def, ElemType earray);//?(二元结构数组)或者输入带空节点的输入序列
 status ClearBiTree(BinaTree *T);
+status CreateBiTree( BinaTree *T, const char * def, ElemType earray);//?(二元结构数组)或者输入带空节点的输入序列
+
 status BiTreeEmpty(BinaTree *T);
 int BiTreeDepth(BinaTree *T);
 
@@ -169,11 +170,14 @@ int main(int argc, char *argv[]){
 					printf("当前不存在树\n");getchar();
 					break;
 				}
+				else if(FR->Tnum>1){
+					printf("请使用24号功能完成此操作\n");
+				}
 				else{
 					if(DestroyBiTree(T)) {
 						printf("成功销毁当前树\n");
 						FR->Tnum--;
-						if(FR->Tnum == 0)FR->curBT = T=NULL;
+						if(FR->Tnum == 0)  FR->curBT = T=NULL;
 						else{
 							FR->curBT = T = FR->contents[FR->Tnum-1];
 						}
@@ -212,7 +216,10 @@ int main(int argc, char *argv[]){
 					getchar();
 					break;
 				}
-				else if(ClearBiTree(T)) printf("已成功清空树内容\n");
+				else if(ClearBiTree(T)){
+					 printf("已成功清空树内容\n");
+					 T->root = NULL;
+				}
 				getchar();
 				getchar();
 				break;
@@ -262,7 +269,7 @@ int main(int argc, char *argv[]){
 				char * s;
 				int type;
 				s = (char*)malloc(30*sizeof(char));
-				printf("请选择要用于检索节点的检索关键字以及检索方式：（名字为1，ID为2）");
+				printf("请选择要用于检索节点的检索关键字以及检索方式：（名字为1，ID为2）\n");
 				scanf("%30s %d", s, &type);
 				TreeNode * srhresult;
 				if(!(srhresult = LocateByValue(T, s, type))) printf("查找失败\n");
@@ -530,7 +537,7 @@ int main(int argc, char *argv[]){
 				int type, LR;
 				TreeNode *srhresult;
 				printf("请输入在当前树中的节点信息：{检索关键字} {检索方式}（名字为1，ID为2，空格隔开）\n");
-				scanf("%30s, %d", s, &type);
+				scanf("%30s %d", s, &type);
 				if (!(srhresult = LocateByValue(T, s, type)))
 					printf("查找失败\n");
 					else{
@@ -646,6 +653,25 @@ int main(int argc, char *argv[]){
 
 			}
 			case 24:{
+				int seq, i;
+				printf("当前的树的个数有：%d\n",FR->Tnum);
+				printf("请输入要删除的树的序号：\n");
+				scanf("%d", &seq);
+				if(seq>0&&seq<=FR->Tnum){
+					if(DestroyBiTree(FR->contents[seq-1])){
+						printf("成功销毁第%d号树\n", seq);
+					for(i = seq; i<FR->Tnum; ++i){
+						FR->contents[i-1] = FR->contents[i];
+					}
+					FR->Tnum--;
+					if(FR->Tnum == 0)  FR->curBT = T=NULL;
+					else{
+							FR->curBT = T = FR->contents[FR->Tnum-1];
+						}
+					}
+					else printf("操作失败\n");
+				}
+				else printf("输入值无效\n");
 				getchar();
 				getchar();
 				break;
@@ -746,6 +772,10 @@ int CreateTreePre(TreeNode ** node, ElemType elist)
 	else{
 		if(!((*node) = (TreeNode*)malloc(sizeof(TreeNode)))) exit(OVERFLOW);
 		const char * s = cJSON_PrintUnformatted(data);
+		#ifdef testblock
+		printf("%s", s);
+		#endif
+
 		(*node)->data = cJSON_Parse(s);
 	}
 	//2.左右子树
@@ -846,15 +876,15 @@ TreeNode* LocateByValue(BinaTree* T, char * value, int valuetype){//type是1输�
 
 		stack<TreeNode *>S;S.push(T->root);
 		while(!S.empty()){
-			while(p->lchild){
-				p = p->lchild;
-				S.push(p);
+			
+			while((p = S.top())&&p){
+				S.push(p->lchild);
 			}
+			S.pop();//这个保证每次必有空指针的操作大有深意
 			if(!S.empty()){
 				p = S.top();
 				if(compare(ElemName(p->data), value)) return p;
 				S.pop();
-				if(p->rchild)
 				S.push(p->rchild);
 			}
 		}
@@ -865,18 +895,20 @@ TreeNode* LocateByValue(BinaTree* T, char * value, int valuetype){//type是1输�
 		TreeNode * p = T->root;
 		stack<TreeNode *>S;S.push(T->root);
 		while(!S.empty()){
-			while(p->lchild){
-				p = p->lchild;
-				S.push(p);
+			
+			while((p = S.top())&&p){
+				S.push(p->lchild);
 			}
+			S.pop();//这个保证每次必有空指针的操作大有深意
 			if(!S.empty()){
 				p = S.top();
 				if(compare(ElemID(p->data), value)) return p;
 				S.pop();
-				if(p->rchild)
 				S.push(p->rchild);
 			}
 		}
+
+	
 		printf("未找到符合要求的元素\n");
 		return ERROR;
 	}
@@ -947,7 +979,9 @@ TreeNode* RightSibling(BinaTree *T, TreeNode *e){
 				p = S.top();
 				if(p->lchild ==e&&p->rchild) return p->rchild;
 				S.pop();
+				if(p->rchild)
 				S.push(p->rchild);
+				
 			}
 		}
 	return ERROR;
@@ -993,11 +1027,13 @@ status ChildCopy(TreeNode* p, TreeNode *q){
 
 status DelateChild(BinaTree *T, TreeNode *pe, int LR){
 	if(LR){
+		if(!pe->rchild) return OK;
 		if(!rcltNode(pe->rchild)) return ERROR;
 		pe->rchild = NULL;
 		return OK;
 	}
 	else{
+		if(!pe->lchild) return OK;
 		if(!rcltNode(pe->lchild)) return ERROR;
 		pe->lchild = NULL;
 		return OK;
@@ -1043,13 +1079,18 @@ status LevelOrderTraverse(BinaTree *T, status(*visit)(TreeNode *e), int mode){
 	int  maxdepth = 0, treesize = 0;
 	int i, cursize;
 	TreeNode *N = T->root;
+	if(mode ==0 && !N){
+		return ERROR;
+	}
 	queue<TreeNode *> Q; Q.push(N);   
 	while(!Q.empty()){
 		cursize = Q.size();
 		for(i = 0; i< cursize; ++i){
-			visit(N = Q.front()); Q.pop(); ++treesize; 
-			if(N->lchild) Q.push(N->lchild);  
-			if(N->rchild)  Q.push(N->rchild);
+			if((N = Q.front())&&N)
+			visit(N); 
+			Q.pop(); ++treesize; 
+			if((N->lchild)!=NULL) Q.push(N->lchild);  
+			if((N->rchild)!=NULL)  Q.push(N->rchild);
 		}
 		maxdepth++;
 	}
@@ -1059,8 +1100,9 @@ status LevelOrderTraverse(BinaTree *T, status(*visit)(TreeNode *e), int mode){
 	
 }
 
-//逆前序遍历
-status TreePrint(BinaTree *T){
+
+/*  version 1
+{
 	vector<int> lineposition; 
 	stack<TreeNode *> S; S.push(T->root); 
 	TreeNode *p = T->root;
@@ -1076,19 +1118,6 @@ status TreePrint(BinaTree *T){
 			{
 
 				brfprint(p);
-				if (leftin == 1&&!(p->lchild||p->rchild))
-					lineposition.pop_back();
-
-				if (leftexist == 1&&(p->lchild||p->rchild)){
-					lineposition.push_back(strlen(ElemName(p->data)) + 4 + lineposition.back());
-					leftin = 0;
-				}
-				if (leftexist == 0&&(p->lchild||p->rchild))
-				{
-					int flen = lineposition.back();
-					lineposition.pop_back();
-					lineposition.push_back(strlen(ElemName(p->data)) + 4 + flen);
-				}
 				if (p->lchild)
 				{
 					leftexist = 1;
@@ -1098,6 +1127,21 @@ status TreePrint(BinaTree *T){
 				{
 					leftexist = 0;
 				}
+				if (leftin == 1&&!(p->lchild||p->rchild))
+					lineposition.pop_back();
+
+				if ( leftexist == 1 && leftin == 0 ){
+					lineposition.push_back(strlen(ElemName(p->data)) + 4 + lineposition.back());
+					leftin = 0;
+				}
+				if (leftexist == 0&&(p->lchild||p->rchild))
+				{
+					int flen = lineposition.back();
+					lineposition.pop_back();
+					lineposition.push_back(strlen(ElemName(p->data)) + 4 + flen);
+				}
+				
+				
 				if (p = p->rchild)
 					S.push(p);
 			}
@@ -1108,6 +1152,7 @@ status TreePrint(BinaTree *T){
 				if(p = p->lchild)
 					S.push(p);
 				leftin = 1;
+				leftexist = 0;
 //换行加tab输出
 			if(!S.empty())
 				printf("\n");
@@ -1115,11 +1160,76 @@ status TreePrint(BinaTree *T){
 				
 			}
 		}
-	
-		
-		
 
 }
+*/
+/*vertion2*/
+//逆前序遍历
+status TreePrint(BinaTree *T)
+{
+	int lastmerge = 1;//对第一个元素默认上一个位置信息0是没有左子树的
+	int isleft = 0;//一开始不是左子树
+	vector<int> lineposition;
+	lineposition.push_back(0);
+
+	stack<TreeNode *> S; S.push(T->root); 
+	TreeNode *p = T->root;
+	while(!S.empty()){
+		while((p = S.top()) && p){ 
+			//visit p
+			brfprint(p);
+			if(p->lchild){
+		
+				if(lastmerge==0){
+					lineposition.push_back(strlen(ElemName(p->data)) + 4 + lineposition.back());
+				}
+				else{
+					int flen = lineposition.back();
+					lineposition.pop_back();
+					lineposition.push_back(strlen(ElemName(p->data)) + 4 + flen);
+				}
+				lastmerge = 0;
+			} 
+			else {
+				if(p->rchild){
+				if(lastmerge == 0 ){
+					lineposition.push_back(strlen(ElemName(p->data)) + 4 + lineposition.back());
+				}
+				else{
+					int flen = lineposition.back();
+					lineposition.pop_back();
+					lineposition.push_back(strlen(ElemName(p->data)) + 4 + flen);
+				}
+				lastmerge = 1;
+				}
+				else if(isleft){
+					lineposition.pop_back();
+				}
+			}
+
+			S.push(p->rchild);
+			isleft = 0;
+			}
+		S.pop();
+		
+		if(!S.empty()){
+			p = S.top();
+			S.pop();
+			S.push(p->lchild);
+			if(p->lchild ){
+				printf("\n");
+				formatline(lineposition);
+				lastmerge = 1;
+				isleft = 1;
+			}
+		}
+	}
+	
+
+
+
+}
+
 status formatline(vector<int> V){
 
 	int i, j, door = V.size();
@@ -1144,7 +1254,8 @@ status brfprint(TreeNode * node){
 
 void dpTreeBrief(BinaTree * Tree){
 	printf("树名：%s", Tree->Treename);
-	LevelOrderTraverse(Tree, &brfprint, 0);
+	if(!LevelOrderTraverse(Tree, &brfprint, 0))
+		printf("树内容为空\n");
 	
 }
 
@@ -1180,30 +1291,30 @@ status InfoReadBT(char *filename, Forest *FR){
     }
 
     cJSON * JSONroot = cJSON_Parse(buffer);
+	cJSON * forest=cJSON_CreateObject();
     //判断cJSON_Parse函数返回值确定是否打包成功
     if (JSONroot == NULL)
     {
         printf("读取JSON类型失败\n");
     }
-	//JSON格式见test1.data
+	//JSON格式见treefile.data
+	
     else//开始读取forest的部分
     {
-	cJSON * forest  = cJSON_GetObjectItem(JSONroot, "forest");
+	forest  = cJSON_GetObjectItem(JSONroot, "forest");
+	
 	int treenum = cJSON_GetArraySize(forest);
-	#ifdef testblock
+	#ifdef testblock1
 	char *out  = cJSON_Print(forest);
 	printf("%s", out);
 	#endif
 
 	int i = 0;
 
-
+	cJSON * treeitem = NULL;
 	for(i = 0; i<treenum; ++i){//循环输入每个树的内容
 
-		
-		cJSON * treeitem;
-		treeitem= cJSON_CreateObject();
-		treeitem= cJSON_GetArrayItem(forest, i);
+		treeitem = cJSON_GetArrayItem(forest, i);
 		#ifdef testblock
 		char *out  = cJSON_Print(treeitem);
 		printf("%s", out);
@@ -1235,8 +1346,8 @@ status InfoReadBT(char *filename, Forest *FR){
 	}
 	//读取完文件，释放空间
 	//cJSON_Delete(forest);
-	cJSON_Delete(JSONroot);
-	
+
+//	cJSON_Delete(JSONroot);
 	
 	}
 	return OK;
@@ -1260,14 +1371,11 @@ status InfoWriteBT(char *filename, Forest * FR){
 		pt = FR->contents[i];
 		pnode = pt->root;
 		//1.name
-		cJSON * divname;
-		if(pt->Treename) {
-			const char * tname = pt->Treename;
-			divname = cJSON_CreateString(tname);
-		}
-		cJSON_AddItemToObject(divtree, "name", divname);
+
+		const char *divname = pt->Treename;
+		cJSON_AddStringToObject(divtree, "name", divname);
 		//2.order   only preorder for now
-		cJSON_AddStringToObject(divtree, "order", "Preorder");
+		cJSON_AddStringToObject(divtree, "order", "PreOrder");
 
 		//3.contents
 		cJSON * divcontent = cJSON_CreateArray();
