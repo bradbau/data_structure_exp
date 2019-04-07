@@ -5,17 +5,17 @@
 #include"cJSON.h"
 
 typedef int status; 
-status ReadList(const char *inname);
+status ReadList(char *inname);
 int main(){
     //char * name;
     //name =(char *)malloc(10*sizeof(char));
 
-    const char * name = "list1.data";
+    char  name[20] = "graph.txt";
     ReadList(name);
     return 0;
 }
 
-status ReadList(const char *filename)
+status ReadList(char *filename)
 {
     FILE *pFile;
 	long lSize;
@@ -23,7 +23,7 @@ status ReadList(const char *filename)
 	size_t result;
 	const char *Fn = filename;
 
-    pFile = fopen(Fn, "rb");
+    pFile = fopen("graph.txt", "rb");
 	if (pFile == NULL)
 	{
 		fputs("File error", stderr);
@@ -54,12 +54,7 @@ status ReadList(const char *filename)
         char *out  = cJSON_Print(cjson);
         printf("%s\n", out);
 
-        cJSON *forest = cJSON_GetObjectItem(cjson, "forest");
-        cJSON *tree1 = cJSON_GetArrayItem(forest, 0);
-        cJSON *array = cJSON_GetObjectItem(tree1, "contents");
-        cJSON *empty = cJSON_GetArrayItem(array, 1);
-        cJSON *normal = cJSON_GetArrayItem(array, 0);
-        cJSON *null = cJSON_CreateNull();
+       char *ID = 
     }
     return 0;
 }

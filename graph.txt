@@ -1,0 +1,66 @@
+{
+  "contents": [
+    {
+      "name": "legendgraph",
+      "vertices": [
+        {
+          "ID": "1",
+          "weight": "34",
+          "message": "rich"
+        },
+        {
+          "ID": "2",
+          "weight": "53",
+          "message": "rich and nice"
+        },
+        {
+          "ID": "3",
+          "weight": "5",
+          "message": "generous"
+        },
+        {
+          "ID": "4",
+          "weight": "29",
+          "message": "wise"
+        },
+        {
+          "ID": "5",
+          "weight": "62",
+          "message": "famous"
+        },
+        {
+          "ID": "6",
+          "weight": "49",
+          "message": "delicate"
+        }
+        
+      ],
+      "arcs": [
+        {
+          "head": "2",
+          "tail": "5"
+        },
+        {
+          "head": "1",
+          "tail": "4"
+        },
+        {
+          "head": "4",
+          "tail": "3"
+        },
+        {
+          "head": "6",
+          "tail": "2"
+        },
+        {
+          "head":"1",
+          "tail":"5"
+        },
+        {
+          "head":"3",
+          "tail":"1"
+        }
+      ]
+    }
+  ]
+}

@@ -11,7 +11,7 @@
                 "${workspaceFolder}\\source\\cJSON.h",
                 "${workspaceFolder}\\source\\cJSON.c",
                 "${file}",
-                "-o",
+                
                 "${fileBasenameNoExtension}.exe",
                 "-fexec-charset=gbk"
 
